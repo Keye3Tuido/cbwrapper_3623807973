@@ -2,7 +2,7 @@ if REPENTOGON or CALLBACK_HOOKED then return end
 CALLBACK_HOOKED = true
 local CBW={
     ModName = "CallbackWrapper",
-    ModVersion = "2.0.0",
+    ModVersion = "2.0.1",
     Author = "Keye3Tuido"
 }
 Isaac.ConsoleOutput(CBW.ModName.." v"..CBW.ModVersion.." - "..CBW.Author.."\n")
@@ -56,35 +56,26 @@ local function _WrapCallbacks()
         debug.sethook(function(event)
             local callingFunc = debug.getinfo(2, 'f').func
             local callbackId
-            if event == 'call' then
-                if callingFunc == Isaac.AddPriorityCallback then
-                    callbackId = select(2,debug.getlocal(2, 2))
-                    CheckCallbackId(callbackId)
-                    local origFunc = select(2, debug.getlocal(2, 4))
-                    if not Wrap2Orig[origFunc] then
-                        local wrappedFunc = Orig2Wrap[origFunc] or WrapFunction(origFunc)
-                        debug.setlocal(2, 4, wrappedFunc)
-                    end
-                elseif callingFunc == Isaac.RemoveCallback then
-                    callbackId = select(2,debug.getlocal(2, 2))
-                    CheckCallbackId(callbackId)
-                    local origFunc = select(2, debug.getlocal(2, 3))
-                    if not Wrap2Orig[origFunc] then
-                        debug.setlocal(2, 3, Orig2Wrap[origFunc] or origFunc)
-                    end
-                elseif callingFunc == Isaac.RunCallback or callingFunc == Isaac.RunCallbackWithParam then
-                    callbackId = select(2,debug.getlocal(2, 1))
+            if callingFunc == Isaac.AddPriorityCallback then
+                callbackId = select(2,debug.getlocal(2, 2))
+                CheckCallbackId(callbackId)
+                local origFunc = select(2, debug.getlocal(2, 4))
+                if not Wrap2Orig[origFunc] then
+                    local wrappedFunc = Orig2Wrap[origFunc] or WrapFunction(origFunc)
+                    debug.setlocal(2, 4, wrappedFunc)
                 end
-            elseif event == 'return' then
-                if callingFunc == Isaac.GetCallbacks then
-                    local returnedCallbacks = debug.getlocal(2, 3)
-                    Isaac.DebugString(returnedCallbacks..'\nCallbackWrapper: All callback functions returned by Isaac.GetCallbacks are now wrapped. ')
+            elseif callingFunc == Isaac.RemoveCallback then
+                callbackId = select(2,debug.getlocal(2, 2))
+                CheckCallbackId(callbackId)
+                local origFunc = select(2, debug.getlocal(2, 3))
+                if not Wrap2Orig[origFunc] then
+                    debug.setlocal(2, 3, Orig2Wrap[origFunc] or origFunc)
                 end
-            end
-            if callbackId then
+            elseif callingFunc == Isaac.RunCallback or callingFunc == Isaac.RunCallbackWithParam or callingFunc == Isaac.GetCallbacks then
+                callbackId = select(2,debug.getlocal(2, 1))
                 CheckCallbackId(callbackId)
             end
-        end, 'cr')
+        end, 'c')
 
         Hooked = true
     end
@@ -114,4 +105,3 @@ WrapCallbacks = _WrapCallbacks
 UnwrapCallbacks = _UnwrapCallbacks
 
 WrapCallbacks()
-
