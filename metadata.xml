@@ -18,9 +18,10 @@
 		lua WrapCallbacks()    --Enable wrapping
 		Repeatedly enabling/disabling wrapping will not cause additional effects.
 	</description>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
+    <tag id="Hazards"/>
     <tag id="Tweaks"/>
     <tag id="Removals"/>
 </metadata>
