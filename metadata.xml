@@ -4,14 +4,16 @@
     <directory>cbwrapper</directory>
     <id>3623807973</id>
     <description>
-		使用debug库，将模组回调进行安全包装，并更改AddPriorityCallback、RemoveCallback函数的参数，防止因回调错误导致游戏崩溃。
+		使用debug库，将模组回调进行安全包装，并更改AddPriorityCallback、RemoveCallback、RunCallback、RunCallbackWithParam、GetCallbacks函数的参数，防止因回调错误导致游戏崩溃。
+		GetCallbacks返回的表中的回调函数是被包装过后的函数。
 		当游戏装有忏悔龙时，该模组不生效。
 		默认启用安全包装模式。可在控制台输入：
 		lua UnwrapCallbacks()  --取消包装
 		lua WrapCallbacks()    --启用包装
 		重复启用/取消包装不会产生额外影响。
 
-		Uses the debug library to safely wrap mod callbacks and modify the parameters of AddPriorityCallback and RemoveCallback functions to prevent game crashes due to callback errors.
+		Uses the debug library to safely wrap mod callbacks and modify the parameters of AddPriorityCallback, RemoveCallback, RunCallback, RunCallbackWithParam, and GetCallbacks functions to prevent game crashes due to callback errors.
+		The callbacks in the table returned by GetCallbacks are the wrapped functions.
 		When Repentogon is installed, this mod is inactive.
 		Safe wrapping mode is enabled by default. You can enter in the console:
 		lua UnwrapCallbacks()  --Disable wrapping
